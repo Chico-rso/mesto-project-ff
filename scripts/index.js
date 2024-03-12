@@ -1,4 +1,6 @@
 // @todo: Темплейт карточки
+const cardTemplate = document.querySelector('#card-template').content
+console.log(cardTemplate);
 
 // @todo: DOM узлы
 
