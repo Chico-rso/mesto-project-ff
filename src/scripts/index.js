@@ -1,7 +1,9 @@
-import './pages/index.css';
-import './scripts/cards.js';
+import '../pages/index.css';
 
-const avatar = new URL('./images/avatar.jpg', import.meta.url);
+import { initialCards } from './cards.js';
+import {openModal, closeModal} from './modals.js'
+
+const avatar = new URL('../images/avatar.jpg', import.meta.url);
 const avatarObject = {
   link: avatar
 };
