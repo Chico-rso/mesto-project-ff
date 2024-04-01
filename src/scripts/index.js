@@ -1,42 +1,40 @@
 import '../pages/index.css';
 
 import { initialCards } from './cards.js';
-import {openModal, closeModal} from './modals.js'
+import { createCard, removeCard } from './card.js';
+import { openPopup, closePopup } from './modals.js';
 
+const cardList = document.querySelector('.places__list');
 const avatar = new URL('../images/avatar.jpg', import.meta.url);
+const profileEditPopup = document.querySelector('.popup_type_edit');
+const profileAddPopup = document.querySelector('.popup_type_new-card');
+const profileImagePopup = document.querySelector('.popup_type_image');
+const content = document.querySelector('.page__content');
+
+
 const avatarObject = {
   link: avatar
 };
-
 const avatarImage = document.querySelector('.profile__image');
 avatarImage.style.backgroundImage = `url(${avatarObject.link})`
 
-const cardTemplate = document.querySelector('#card-template').content
-const cardList = document.querySelector('.places__list');
-function createCard(cardData, removeCard)
-{
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImage = cardElement.querySelector('.card__image');
-  const cardTitle = cardElement.querySelector('.card__title');
-  const deleteBtnCard = cardElement.querySelector('.card__delete-button');
+content.addEventListener('click', (evt) => {
+  let target = evt.target;
 
-  deleteBtnCard.addEventListener('click', (event) => {
-    removeCard(event);
-  });
+  if(target.classList.contains('profile__edit-button'))
+  {
+    openPopup(profileEditPopup, 'popup_is-opened');
+  }
+  if(target.classList.contains('profile__add-button'))
+  {
+    openPopup(profileAddPopup, 'popup_is-opened')
+  }
+  if(target.classList.contains('card__image'))
+  {
+    openPopup(profileImagePopup, 'popup_is-opened')
+  }
+})
 
-  cardImage.src = cardData.link;
-  cardImage.alt = cardData.alt
-  cardTitle.textContent = cardData.name;
-
-  return cardElement;
-}
-
-function removeCard(event)
-{
-  const target = event.target.closest('.places__item');
-
-  target.remove();
-}
 
 initialCards.forEach((item) =>
 {

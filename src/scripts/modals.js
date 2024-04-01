@@ -1,24 +1,19 @@
-function openPopup(popup, addClass)
+export function openPopup(popup, addClass)
 {
   popup.classList.toggle(addClass);
-  document.addEventListener('keydown', keyDownHendler);
+  document.addEventListener('keydown', keyDownHandler);
 }
 
-function closePopup(popup, removeClass)
+export function closePopup(popup, removeClass)
 {
   popup.classList.remove(removeClass);
-  document.removeEventListener('keydown', keyDownHendler);
+  document.removeEventListener('keydown', keyDownHandler);
 }
 
-function keyDownHendler(evt)
+function keyDownHandler(evt)
 {
   if(evt.key === 'Escape')
   {
     closePopup(document.querySelector('.popup_is-opened'), 'popup_is-opened')
   }
-}
-
-export default {
-  openPopup,
-  closePopup
 }
