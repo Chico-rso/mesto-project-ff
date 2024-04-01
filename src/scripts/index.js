@@ -1,8 +1,8 @@
 import '../pages/index.css';
 
-import { initialCards } from './cards.js';
-import { createCard, removeCard, openImagePopup } from './card.js';
-import { openPopup, closePopup } from './modals.js';
+import { initialCards } from './components/cards.js';
+import { createCard, removeCard, openImagePopup } from './components/card.js';
+import { openPopup, closePopup, updatePopupValue } from './components/modals.js';
 
 const cardList = document.querySelector('.places__list');
 const avatar = new URL('../images/avatar.jpg', import.meta.url);
@@ -10,6 +10,8 @@ const profileEditPopup = document.querySelector('.popup_type_edit');
 const profileAddPopup = document.querySelector('.popup_type_new-card');
 const profileImagePopup = document.querySelector('.popup_type_image');
 const content = document.querySelector('.page__content');
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 
 
 const avatarObject = {
@@ -24,6 +26,7 @@ content.addEventListener('click', (evt) => {
   if(target.classList.contains('profile__edit-button'))
   {
     openPopup(profileEditPopup, 'popup_is-opened');
+    updatePopupValue();
   }
   if(target.classList.contains('profile__add-button'))
   {
