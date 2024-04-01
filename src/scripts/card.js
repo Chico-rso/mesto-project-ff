@@ -1,6 +1,6 @@
 const cardTemplate = document.querySelector('#card-template').content
 
-export function createCard(cardData, removeCard)
+export function createCard(cardData, removeCard, openImagePopup)
 {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
@@ -10,6 +10,8 @@ export function createCard(cardData, removeCard)
   deleteBtnCard.addEventListener('click', (event) => {
     removeCard(event);
   });
+
+  cardImage.addEventListener('click', () => openImagePopup(cardImage.src, cardImage.alt));
 
   cardImage.src = cardData.link;
   cardImage.alt = cardData.alt
@@ -25,7 +27,12 @@ export function removeCard(event)
   target.remove();
 }
 
-// export default {
-//   removeCard,
-//   createCard
-// }
+export function openImagePopup(imageSrc, imageAlt)
+{
+  const popupImage = document.querySelector('.popup__image');
+  const popupCaption = document.querySelector('.popup__caption');
+
+  popupImage.src = imageSrc;
+  popupImage.alt = imageAlt;
+  popupCaption.textContent = imageAlt;
+}

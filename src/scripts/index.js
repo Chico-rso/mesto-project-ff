@@ -1,7 +1,7 @@
 import '../pages/index.css';
 
 import { initialCards } from './cards.js';
-import { createCard, removeCard } from './card.js';
+import { createCard, removeCard, openImagePopup } from './card.js';
 import { openPopup, closePopup } from './modals.js';
 
 const cardList = document.querySelector('.places__list');
@@ -43,5 +43,5 @@ content.addEventListener('click', (evt) => {
 
 initialCards.forEach((item) =>
 {
-  cardList.append(createCard(item, removeCard));
+  cardList.append(createCard(item, removeCard, openImagePopup));
 })
