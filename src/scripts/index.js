@@ -33,8 +33,13 @@ content.addEventListener('click', (evt) => {
   {
     openPopup(profileImagePopup, 'popup_is-opened')
   }
-})
 
+  if(target.classList.contains('popup__close') || target.classList.contains('popup_is-opened'))
+  {
+    const popupOpen = content.querySelector('.popup_is-opened');
+    closePopup(popupOpen, 'popup_is-opened')
+  }
+})
 
 initialCards.forEach((item) =>
 {
