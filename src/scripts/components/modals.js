@@ -27,3 +27,19 @@ function keyDownHandler(evt)
     closePopup(document.querySelector('.popup_is-opened'), 'popup_is-opened')
   }
 }
+
+function handleFormSubmit(evt)
+{
+  evt.preventDefault();
+
+  const name = nameInput.value;
+  const job = jobInput.value;
+
+  profileJob.textContent = job;
+  profileName.textContent = name;
+
+  const popupOpen = document.querySelector('.popup_is-opened');
+  closePopup(popupOpen, 'popup_is-opened')
+}
+
+formElement.addEventListener('submit', handleFormSubmit);

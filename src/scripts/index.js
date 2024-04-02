@@ -10,8 +10,6 @@ const profileEditPopup = document.querySelector('.popup_type_edit');
 const profileAddPopup = document.querySelector('.popup_type_new-card');
 const profileImagePopup = document.querySelector('.popup_type_image');
 const content = document.querySelector('.page__content');
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
 
 
 const avatarObject = {
