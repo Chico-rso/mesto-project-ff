@@ -1,5 +1,4 @@
-const cardTemplate = document.querySelector('#card-template').content
-const formElement = document.querySelector('[name="new-place"]');
+const cardTemplate = document.querySelector('#card-template').content;
 
 export function createCard(cardData, removeCard, likeCard, openImagePopup)
 {
