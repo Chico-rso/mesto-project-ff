@@ -46,7 +46,7 @@ content.addEventListener('click', (evt) => {
     closePopup(popupOpen, 'popup_is-opened')
   }
 })
-function createNewCard(evt, cardList, cardTemplate, likeCard)
+function createNewCard(evt, cardList, cardTemplate, likeCard, openImagePopup)
 {
   evt.preventDefault();
 
