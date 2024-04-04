@@ -27,7 +27,15 @@ function keyDownHandler(evt)
     closePopup(document.querySelector('.popup_is-opened'), 'popup_is-opened')
   }
 }
+export function openImagePopup(imageSrc, imageAlt)
+{
+  const popupImage = document.querySelector('.popup__image');
+  const popupCaption = document.querySelector('.popup__caption');
 
+  popupImage.src = imageSrc;
+  popupImage.alt = imageAlt;
+  popupCaption.textContent = imageAlt;
+}
 function handleFormSubmit(evt)
 {
   evt.preventDefault();

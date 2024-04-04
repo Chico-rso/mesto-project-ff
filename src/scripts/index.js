@@ -1,17 +1,14 @@
 import '../pages/index.css';
 
 import { initialCards } from './components/cards.js';
-import { createCard, removeCard, openImagePopup, likeCard } from './components/card.js';
-import { openPopup, closePopup, updatePopupValue } from './components/modals.js';
+import { createCard, removeCard, likeCard, createNewCard } from './components/card.js';
+import { openPopup, closePopup, updatePopupValue, openImagePopup } from './components/modals.js';
 
 const cardList = document.querySelector('.places__list');
-const cardTemplate = document.querySelector('#card-template').content;
 const profileEditPopup = document.querySelector('.popup_type_edit');
 const profileAddPopup = document.querySelector('.popup_type_new-card');
 const profileImagePopup = document.querySelector('.popup_type_image');
 const content = document.querySelector('.page__content');
-const newCardName = document.querySelector('.popup__input_type_card-name');
-const newCardLink = document.querySelector('.popup__input_type_url');
 const formAddNewCard = document.querySelector('[name="new-place"]');
 
 
@@ -46,24 +43,16 @@ content.addEventListener('click', (evt) => {
     closePopup(popupOpen, 'popup_is-opened')
   }
 })
-function createNewCard(evt, cardList, cardTemplate, likeCard, openImagePopup)
-{
-  evt.preventDefault();
-
-  const dataNewCard = {
-    name: newCardName.value,
-    link: newCardLink.value,
-  }
-  cardList.prepend(createCard(dataNewCard,removeCard, likeCard, openImagePopup))
-}
 
 formAddNewCard.addEventListener('submit', (evt) => {
-  createNewCard(evt, cardList, cardTemplate, likeCard, openImagePopup)
+  createNewCard(evt, cardList, removeCard, likeCard, openImagePopup)
+
   formAddNewCard.reset();
 
   const popupOpen = document.querySelector('.popup_is-opened');
   closePopup(popupOpen, 'popup_is-opened')
 })
+
 initialCards.forEach((item) =>
 {
   cardList.append(createCard(item, removeCard, likeCard, openImagePopup));
