@@ -13,6 +13,7 @@ export function createCard(cardData, removeCard, likeCard, openImagePopup)
   });
 
   cardImage.addEventListener('click', () => openImagePopup(cardImage.src, cardImage.alt));
+
   likeButton.addEventListener('click', likeCard);
 
   cardImage.src = cardData.link;
