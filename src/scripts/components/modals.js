@@ -14,17 +14,3 @@ function keyDownHandler(evt) {
   }
 }
 
-document.querySelectorAll(".popup").forEach((popup) => {
-  popup.addEventListener("click", (event) => {
-    if (event.target === popup) {
-      closePopup(popup, "popup_is-opened");
-    }
-  });
-});
-document.querySelectorAll(".popup__close").forEach((button) => {
-  button.addEventListener("click", (event) => {
-    console.log("click");
-    const popup = event.target.closest(".popup");
-    closePopup(popup, "popup_is-opened");
-  });
-});

@@ -9,7 +9,6 @@ export function createCard(cardData, removeCard, likeCard, openImagePopup) {
   deleteBtnCard.addEventListener("click", (event) => {
     removeCard(event);
   });
-
   cardImage.addEventListener("click", () =>
     openImagePopup(cardImage.src, cardImage.alt)
   );

@@ -9,6 +9,9 @@ const cardList = document.querySelector(".places__list");
 const profileEditPopup = document.querySelector(".popup_type_edit");
 const profileAddPopup = document.querySelector(".popup_type_new-card");
 const profileImagePopup = document.querySelector(".popup_type_image");
+const imagePopupImage = document.querySelector(".popup__image");
+const imagePopupCaption = document.querySelector(".popup__caption");
+const popupIsOpened = 'popup_is-opened';
 
 const buttonOpenPopupProfile = document.querySelector(".profile__edit-button");
 const buttonOpenPopupAddNewCard = document.querySelector(".profile__add-button");
@@ -33,21 +36,34 @@ const avatarImage = document.querySelector(".profile__image");
 avatarImage.style.backgroundImage = `url(${avatarObject.link})`;
 
 buttonOpenPopupProfile.addEventListener("click", () => {
-  openPopup(profileEditPopup, "popup_is-opened");
+  openPopup(profileEditPopup, popupIsOpened);
   updatePopupValue();
 });
 
 buttonOpenPopupAddNewCard.addEventListener("click", () => {
-  openPopup(profileAddPopup, "popup_is-opened");
+  openPopup(profileAddPopup, popupIsOpened);
 });
 
-function openImagePopup(imageSrc, link) {
-  const imagePopupImage = document.querySelector(".popup__image");
-  const imagePopupCaption = document.querySelector(".popup__caption");
+document.querySelectorAll(".popup").forEach((popup) => {
+  popup.addEventListener("click", (event) => {
+    if (event.target === popup) {
+      closePopup(popup, "popup_is-opened");
+    }
+  });
+});
+document.querySelectorAll(".popup__close").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const popup = event.target.closest(".popup");
+    closePopup(popup, "popup_is-opened");
+  });
+});
 
+function openImagePopup(imageSrc, name) {
   imagePopupImage.src = imageSrc;
-  imagePopupCaption.textContent = link;
-  openPopup(profileImagePopup, "popup_is-opened");
+  imagePopupCaption.textContent = name;
+  imagePopupImage.alt = name;
+
+  openPopup(profileImagePopup, popupIsOpened);
 }
 function updatePopupValue() {
   nameInput.value = profileName.textContent;
@@ -62,7 +78,7 @@ function handleFormEditProfileSubmit(evt) {
   profileJob.textContent = job;
   profileName.textContent = name;
 
-  closePopup(profileEditPopup, "popup_is-opened");
+  closePopup(profileEditPopup, popupIsOpened);
 }
 function renderCard(
   evt,
@@ -87,7 +103,7 @@ formElementAddNewCard.addEventListener("submit", (evt) => {
 
   formElementAddNewCard.reset();
 
-  closePopup(profileAddPopup, "popup_is-opened");
+  closePopup(profileAddPopup, popupIsOpened);
 });
 
 formElementEditProfile.addEventListener("submit", handleFormEditProfileSubmit);
