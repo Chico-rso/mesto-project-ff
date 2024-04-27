@@ -3,6 +3,7 @@ import "../../pages/index.css";
 import { initialCards } from "./cards.js";
 import { createCard, removeCard, likeCard} from "./card.js";
 import { openPopup, closePopup } from "./modals.js";
+import validation from "./validation.js";
 
 const POPUP_IS_OPENED = 'popup_is-opened';
 
