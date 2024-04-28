@@ -8,7 +8,6 @@ export const validationConfig = {
 };
 
 function showInputError(formElement, inputElement, errorMessage) {
-  console.log(errorMessage);
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
   inputElement.classList.add(validationConfig.inputErrorClass);
