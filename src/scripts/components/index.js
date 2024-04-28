@@ -1,6 +1,5 @@
 import "../../pages/index.css";
 
-import { initialCards } from "./cards.js";
 import { createCard, removeCard, likeCard} from "./card.js";
 import { openPopup, closePopup } from "./modals.js";
 import {
@@ -10,6 +9,7 @@ import {
   enableValidation,
   clearValidation,
 } from "../components/validation.js";
+import { apiRequest, catchError } from "../components/api.js";
 
 const POPUP_IS_OPENED = 'popup_is-opened';
 
@@ -34,14 +34,39 @@ const profileJob = document.querySelector(".profile__description");
 const newCardName = document.querySelector(".popup__input_type_card-name");
 const inputNameFormCard = document.querySelector(".popup__input_type_url");
 
-const avatar = new URL("../../images/avatar.jpg", import.meta.url);
 const avatarImage = document.querySelector(".profile__image");
-avatarImage.style.backgroundImage = `url(${avatar})`;
-
 
 
 enableValidation(validationConfig);
 
+// работа с запросами
+Promise.all([
+  apiRequest({
+    url: "cards",
+    method: "GET",
+  }),
+
+  apiRequest({
+    url: "users/me",
+    method: "GET",
+  }),
+])
+.then(([cards, userData]) => {
+  setDataCards(cards);
+  setUserData(userData);
+})
+.catch(catchError);
+
+function setDataCards(data) {
+  data.forEach((item) => {
+    cardList.append(createCard(item, removeCard, likeCard, openImagePopup));
+  });
+}
+function setUserData(data) {
+  profileName.textContent = data.name;
+  profileJob.textContent = data.about;
+  avatarImage.style.backgroundImage = `url(${data.avatar})`;
+}
 
 buttonOpenPopupProfile.addEventListener("click", () => {
   openPopup(profileEditPopup, POPUP_IS_OPENED);
@@ -111,7 +136,3 @@ formElementAddNewCard.addEventListener("submit", (evt) => {
 });
 
 formElementEditProfile.addEventListener("submit", handleFormEditProfileSubmit);
-
-initialCards.forEach((item) => {
-  cardList.append(createCard(item, removeCard, likeCard, openImagePopup));
-});
