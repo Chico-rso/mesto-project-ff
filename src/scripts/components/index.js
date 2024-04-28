@@ -3,7 +3,13 @@ import "../../pages/index.css";
 import { initialCards } from "./cards.js";
 import { createCard, removeCard, likeCard} from "./card.js";
 import { openPopup, closePopup } from "./modals.js";
-import validation from "./validation.js";
+import {
+  validationConfig,
+  showInputError,
+  hideInputError,
+  enableValidation,
+  clearValidation,
+} from "../components/validation.js";
 
 const POPUP_IS_OPENED = 'popup_is-opened';
 
@@ -32,13 +38,20 @@ const avatar = new URL("../../images/avatar.jpg", import.meta.url);
 const avatarImage = document.querySelector(".profile__image");
 avatarImage.style.backgroundImage = `url(${avatar})`;
 
+
+
+enableValidation(validationConfig);
+
+
 buttonOpenPopupProfile.addEventListener("click", () => {
   openPopup(profileEditPopup, POPUP_IS_OPENED);
   updatePopupValue();
+  clearValidation(formElementEditProfile, validationConfig);
 });
 
 buttonOpenPopupAddNewCard.addEventListener("click", () => {
   openPopup(profileAddPopup, POPUP_IS_OPENED);
+  clearValidation(formElementAddNewCard, validationConfig);
 });
 
 document.querySelectorAll(".popup").forEach((popup) => {
