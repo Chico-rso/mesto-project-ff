@@ -10,6 +10,7 @@ import {
   clearValidation,
 } from "../components/validation.js";
 import { apiRequest, catchError } from "../components/api.js";
+import { data } from "autoprefixer";
 
 const POPUP_IS_OPENED = 'popup_is-opened';
 
@@ -71,6 +72,20 @@ function setUserData(data) {
   avatarImage.style.backgroundImage = `url(${data.avatar})`;
 }
 
+function editProfileData()
+{
+  apiRequest({
+    url: "users/me",
+    method: "PATCH",
+    body: {
+      name: nameInput.value,
+      about: jobInput.value,
+    },
+  }).then((data) => {
+    setUserData(data);
+  })
+}
+
 buttonOpenPopupProfile.addEventListener("click", () => {
   openPopup(profileEditPopup, POPUP_IS_OPENED);
   updatePopupValue();
@@ -120,6 +135,8 @@ function handleFormEditProfileSubmit(evt) {
 
   profileJob.textContent = job;
   profileName.textContent = name;
+
+  editProfileData();
 
   closePopup(profileEditPopup, POPUP_IS_OPENED);
 }
