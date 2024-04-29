@@ -58,7 +58,7 @@ Promise.all([
   }),
 ])
 .then(([cards, userData]) => {
-  setDataCards(cards);
+  setDataCards(cards, userData._id);
   setUserData(userData);
 })
 .catch(catchError);
@@ -67,9 +67,10 @@ Promise.all([
  * Sets the data for the cards.
  * @param {Array} data - The array of card data.
  */
-function setDataCards(data) {
+function setDataCards(data, ownerId) {
+  console.log(ownerId);
   data.forEach((item) => {
-    cardList.append(createCard(item, removeCard, likeCard, openImagePopup));
+    cardList.append(createCard(item, removeCard, likeCard, openImagePopup, ownerId));
   });
 }
 
