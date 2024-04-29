@@ -7,6 +7,18 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  position: relative;
+  cursor: pointer;
+
+  &:hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url(/src/images/pen.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }
 
 @media screen and (max-width: 740px) {
