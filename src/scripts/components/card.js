@@ -1,4 +1,4 @@
-export function createCard({link, name}, removeCard, likeCard, openImagePopup) {
+export function createCard({link, name, _id, likes}, removeCard, likeCard, openImagePopup) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
