@@ -16,15 +16,18 @@ const POPUP_IS_OPENED = 'popup_is-opened';
 const cardList = document.querySelector(".places__list");
 const profileEditPopup = document.querySelector(".popup_type_edit");
 const profileAddPopup = document.querySelector(".popup_type_new-card");
+const profileAvatarPopup = document.querySelector('.popup_type_avatar');
 const profileImagePopup = document.querySelector(".popup_type_image");
 const imagePopupImage = document.querySelector(".popup__image");
 const imagePopupCaption = document.querySelector(".popup__caption");
 
 const buttonOpenPopupProfile = document.querySelector(".profile__edit-button");
 const buttonOpenPopupAddNewCard = document.querySelector(".profile__add-button");
+const buttonOpenPopupAvatar = document.querySelector('.profile__image');
 
 const formElementAddNewCard = document.querySelector('[name="new-place"]');
 const formElementEditProfile = document.querySelector('[name="edit-profile"]');
+const formElementAvatar = document.querySelector('[name="avatar"]');
 
 const nameInput = formElementEditProfile.querySelector(".popup__input_type_name");
 const jobInput = formElementEditProfile.querySelector(".popup__input_type_description");
@@ -78,6 +81,11 @@ buttonOpenPopupAddNewCard.addEventListener("click", () => {
   openPopup(profileAddPopup, POPUP_IS_OPENED);
   clearValidation(formElementAddNewCard, validationConfig);
 });
+
+buttonOpenPopupAvatar.addEventListener('click', () => {
+  openPopup(profileAvatarPopup, POPUP_IS_OPENED)
+  clearValidation(formElementAvatar, validationConfig);
+})
 
 document.querySelectorAll(".popup").forEach((popup) => {
   popup.addEventListener("click", (event) => {
