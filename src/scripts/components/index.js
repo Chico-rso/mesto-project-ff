@@ -46,7 +46,6 @@ const avatarImage = document.querySelector(".profile__image");
 
 enableValidation(validationConfig);
 
-// работа с запросами
 Promise.all([
   apiRequest({
     url: "cards",
@@ -98,6 +97,23 @@ function editProfileData()
     },
   }).then((data) => {
     setUserData(data);
+  })
+}
+
+/**
+ * Add new card
+ * @param {Object} data - The card data.
+ */
+function addNewCard(data) {
+  apiRequest({
+    url: "cards",
+    method: "POST",
+    body: {
+      name: data.name,
+      link: data.link,
+    },
+  }).then((data) => {
+    cardList.prepend(createCard(data, removeCard, likeCard, openImagePopup));
   })
 }
 
@@ -181,9 +197,7 @@ function renderCard(evt) {
     name: newCardName.value,
     link: inputNameFormCard.value,
   };
-  cardList.prepend(
-    createCard(dataNewCard, removeCard, likeCard, openImagePopup)
-  );
+  addNewCard(dataNewCard);
 }
 
 formElementAddNewCard.addEventListener("submit", (evt) => {
