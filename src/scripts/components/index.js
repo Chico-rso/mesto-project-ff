@@ -10,8 +10,11 @@ import {
   clearValidation,
 } from "../components/validation.js";
 import { apiRequest, catchError } from "../components/api.js";
-import { data } from "autoprefixer";
 
+/**
+ * Constant representing the class name for an opened popup.
+ * @constant {string}
+ */
 const POPUP_IS_OPENED = 'popup_is-opened';
 
 const cardList = document.querySelector(".places__list");
@@ -61,17 +64,29 @@ Promise.all([
 })
 .catch(catchError);
 
+/**
+ * Sets the data for the cards.
+ * @param {Array} data - The array of card data.
+ */
 function setDataCards(data) {
   data.forEach((item) => {
     cardList.append(createCard(item, removeCard, likeCard, openImagePopup));
   });
 }
+
+/**
+ * Sets the user data.
+ * @param {Object} data - The user data.
+ */
 function setUserData(data) {
   profileName.textContent = data.name;
   profileJob.textContent = data.about;
   avatarImage.style.backgroundImage = `url(${data.avatar})`;
 }
 
+/**
+ * Edits the profile data.
+ */
 function editProfileData()
 {
   apiRequest({
@@ -116,6 +131,11 @@ document.querySelectorAll(".popup__close").forEach((button) => {
   });
 });
 
+/**
+ * Opens the image popup.
+ * @param {string} imageSrc - The source of the image.
+ * @param {string} name - The name of the image.
+ */
 function openImagePopup(imageSrc, name) {
   imagePopupImage.src = imageSrc;
   imagePopupCaption.textContent = name;
@@ -123,10 +143,19 @@ function openImagePopup(imageSrc, name) {
 
   openPopup(profileImagePopup, POPUP_IS_OPENED);
 }
+
+/**
+ * Updates the values in the profile edit popup.
+ */
 function updatePopupValue() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
 }
+
+/**
+ * Handles the form submit event for editing the profile.
+ * @param {Event} evt - The form submit event.
+ */
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
 
@@ -140,6 +169,11 @@ function handleFormEditProfileSubmit(evt) {
 
   closePopup(profileEditPopup, POPUP_IS_OPENED);
 }
+
+/**
+ * Renders a new card.
+ * @param {Event} evt - The form submit event.
+ */
 function renderCard(evt) {
   evt.preventDefault();
 
