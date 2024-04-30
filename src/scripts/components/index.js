@@ -4,8 +4,6 @@ import { createCard, removeCard, likeCard } from "./card.js";
 import { openPopup, closePopup } from "./modals.js";
 import {
   validationConfig,
-  showInputError,
-  hideInputError,
   enableValidation,
   clearValidation,
 } from "../components/validation.js";
