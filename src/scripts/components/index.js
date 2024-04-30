@@ -203,66 +203,46 @@ function loadingForm(evt, buttonText = "Сохранить") {
  * Handles the form submit event for editing the profile.
  * @param {Event} evt - The form submit event.
  */
-function handleFormEditProfileSubmit(evt) {
+async function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
-  try {
-    loadingForm(evt, "Сохранение...");
-
-    const name = nameInput.value;
-    const job = jobInput.value;
-
-    profileJob.textContent = job;
-    profileName.textContent = name;
-
-    editProfileData();
-  } catch (error) {
-    catchError(error);
-  } finally {
-    loadingForm(evt);
-    closePopup(profileEditPopup, POPUP_IS_OPENED);
-  }
+  loadingForm(evt, "Сохранение...");
+  await editProfileData();
+  loadingForm(evt);
+  closePopup(profileEditPopup, POPUP_IS_OPENED);
 }
 /** Handles the form submit event for adding a new card.
  * @param {Event} evt - The form submit event.
  */
-function handleFormAddNewCardSubmit(evt) {
-  try {
-    loadingForm(evt, "Создание...");
-    renderCard(evt);
-    formElementAddNewCard.reset();
-  } catch (error) {
-    catchError(error);
-  } finally {
-    loadingForm(evt);
-    closePopup(profileAddPopup, POPUP_IS_OPENED);
-  }
+async function handleFormAddNewCardSubmit(evt) {
+  evt.preventDefault();
+  loadingForm(evt, "Создание...");
+  const dataNewCard = {
+    name: newCardName.value,
+    link: inputNameFormCard.value,
+  };
+  await addNewCard(dataNewCard, "661cb6fbb2d4539d21b15277");
+  formElementAddNewCard.reset();
+  loadingForm(evt);
+  closePopup(profileAddPopup, POPUP_IS_OPENED);
 }
 
 /**
  * Handles the form submit event for changing the avatar.
  * @param {Event} evt - The form submit event.
  */
-function handleFormChangeAvatarSubmit(evt) {
+async function handleFormChangeAvatarSubmit(evt) {
   evt.preventDefault();
-
   loadingForm(evt, "Сохранение...");
-
-  const avatar = avatarUrlInput.value;
-
-  apiRequest({
+  const data = await apiRequest({
     url: "users/me/avatar",
     method: "PATCH",
     body: {
-      avatar,
+      avatar: avatarUrlInput.value,
     },
-  })
-    .then((data) => {
-      avatarImage.style.backgroundImage = `url(${data.avatar})`;
-    })
-    .finally(() => {
-      loadingForm(evt);
-      closePopup(profileAvatarPopup, POPUP_IS_OPENED);
-    });
+  });
+  avatarImage.style.backgroundImage = `url(${data.avatar})`;
+  loadingForm(evt);
+  closePopup(profileAvatarPopup, POPUP_IS_OPENED);
 }
 
 formElementAddNewCard.addEventListener("submit", handleFormAddNewCardSubmit);
