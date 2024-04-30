@@ -14,7 +14,7 @@ export function createCard({link, name, _id, likes, owner}, removeCard, likeCard
   }
 
   deleteBtnCard.addEventListener("click", (event) => {
-    removeCard(event);
+    removeCard(event, _id);
   });
   cardImage.addEventListener("click", () =>
     openImagePopup(link, name)
@@ -35,12 +35,15 @@ export function createCard({link, name, _id, likes, owner}, removeCard, likeCard
   return cardElement;
 }
 
-export function removeCard({ target }) {
-
-  const card = target.closest(".places__item");
-  if (card) {
+export function removeCard(event, _id) {
+  const card = event.target.closest(".card");
+  const url = `cards/${_id}`;
+  apiRequest({
+    url,
+    method: "DELETE",
+  }).then(() => {
     card.remove();
-  }
+  }).catch(catchError);
 }
 
 export function likeCard(_id, likes, likeButton, likeCounter) {

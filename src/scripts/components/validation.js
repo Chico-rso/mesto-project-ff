@@ -84,7 +84,6 @@ function hasInvalidInput(inputList) {
 }
 
 export function clearValidation(formElement, validationConfig) {
-  console.log(formElement);
   const inputList = Array.from(
     formElement.querySelectorAll(validationConfig.inputSelector)
   );

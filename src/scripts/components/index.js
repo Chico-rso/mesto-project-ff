@@ -68,7 +68,6 @@ Promise.all([
  * @param {Array} data - The array of card data.
  */
 function setDataCards(data, ownerId) {
-  console.log(ownerId);
   data.forEach((item) => {
     cardList.append(createCard(item, removeCard, likeCard, openImagePopup, ownerId));
   });
