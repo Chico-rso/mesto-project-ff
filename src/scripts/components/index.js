@@ -177,21 +177,6 @@ function updatePopupValue() {
   jobInput.value = profileJob.textContent;
 }
 
-/**
- * Renders a new card.
- * @param {Event} evt - The form submit event.
- */
-function renderCard(evt) {
-  evt.preventDefault();
-
-  const dataNewCard = {
-    name: newCardName.value,
-    link: inputNameFormCard.value,
-  };
-
-  addNewCard(dataNewCard, "661cb6fbb2d4539d21b15277");
-}
-
 function loadingForm(evt, buttonText = "Сохранить") {
   const button = evt.target.querySelector(".popup__button");
   button.textContent = buttonText;
