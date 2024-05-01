@@ -2,13 +2,19 @@ import "../../pages/index.css";
 
 import { createCard, removeCard, likeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
-import { loadingForm, catchError } from "./utils.js";
+import { loadingForm } from "./utils.js";
 import {
   validationConfig,
   enableValidation,
   clearValidation,
 } from "../components/validation.js";
-import { apiRequest } from "../components/api.js";
+import {
+  getInitialCards,
+  getUserInfo,
+  editProfile,
+  addCard,
+  updateAvatar,
+} from "../components/api.js";
 
 /**
  * Constant representing the class name for an opened popup.
@@ -53,22 +59,11 @@ const avatarImage = document.querySelector(".profile__image");
 
 enableValidation(validationConfig);
 
-Promise.all([
-  apiRequest({
-    url: "cards",
-    method: "GET",
-  }),
-
-  apiRequest({
-    url: "users/me",
-    method: "GET",
-  }),
-])
+Promise.all([getInitialCards(), getUserInfo()])
   .then(([cards, userData]) => {
     setDataCards(cards, userData._id);
     setUserData(userData);
   })
-  .catch(catchError);
 
 /**
  * Sets the data for the cards.
@@ -96,16 +91,10 @@ function setUserData(data) {
  * Edits the profile data.
  */
 function editProfileData() {
-  apiRequest({
-    url: "users/me",
-    method: "PATCH",
-    body: {
-      name: nameInput.value,
-      about: jobInput.value,
-    },
-  }).then((data) => {
-    setUserData(data);
-  }).catch(catchError);
+  editProfile(nameInput.value, jobInput.value)
+    .then((data) => {
+      setUserData(data);
+    })
 }
 
 /**
@@ -113,18 +102,12 @@ function editProfileData() {
  * @param {Object} data - The card data.
  */
 function addNewCard(data) {
-  apiRequest({
-    url: "cards",
-    method: "POST",
-    body: {
-      name: data.name,
-      link: data.link,
-    },
-  }).then((data) => {
-    cardList.prepend(
-      createCard(data, removeCard, likeCard, openImagePopup, data.owner._id)
-    );
-  }).catch(catchError);
+  addCard(data.name, data.link)
+    .then((card) => {
+      cardList.prepend(
+        createCard(card, removeCard, likeCard, openImagePopup, card.owner._id)
+      );
+    })
 }
 
 buttonOpenPopupProfile.addEventListener("click", () => {
@@ -224,18 +207,14 @@ function handleFormChangeAvatarSubmit(evt) {
 
   loadingForm(evt, "Сохранение...");
 
-  apiRequest({
-    url: "users/me/avatar",
-    method: "PATCH",
-    body: {
-      avatar: avatarUrlInput.value,
-    },
-  }).then((data) => {
-    avatarImage.style.backgroundImage = `url(${data.avatar})`;
-  }).finally(() => {
-    loadingForm(evt)
-    closePopup(profileAvatarPopup, POPUP_IS_OPENED);
-  });
+  updateAvatar(avatarUrlInput.value)
+    .then((data) => {
+      avatarImage.style.backgroundImage = `url(${data.avatar})`;
+    })
+    .finally(() => {
+      loadingForm(evt);
+      closePopup(profileAvatarPopup, POPUP_IS_OPENED);
+    });
 }
 
 formElementAddNewCard.addEventListener("submit", handleFormAddNewCardSubmit);

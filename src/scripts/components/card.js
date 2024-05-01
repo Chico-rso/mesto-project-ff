@@ -1,5 +1,4 @@
-import { apiRequest } from "../components/api.js";
-import { catchError } from "../components/utils.js";
+import { removeMyCard, likeCardApi } from "../components/api.js";
 
 export function createCard({link, name, _id, likes, owner}, removeCard, likeCard, openImagePopup, ownerId) {
   const cardTemplate = document.querySelector("#card-template").content;
@@ -21,7 +20,7 @@ export function createCard({link, name, _id, likes, owner}, removeCard, likeCard
     openImagePopup(link, name)
   );
 
-  likeButton.addEventListener("click", likeCard(_id, likes, likeButton, likeCounter));
+  likeButton.addEventListener("click", likeCard(_id, likeButton, likeCounter));
 
   cardImage.src = link;
   cardImage.alt = name;
@@ -38,27 +37,19 @@ export function createCard({link, name, _id, likes, owner}, removeCard, likeCard
 
 export function removeCard(event, _id) {
   const card = event.target.closest(".card");
-  const url = `cards/${_id}`;
-  apiRequest({
-    url,
-    method: "DELETE",
-  }).then(() => {
-    card.remove();
-  }).catch(catchError);
+  removeMyCard(_id)
+    .then(() => {
+      card.remove();
+    })
 }
 
-export function likeCard(_id, likes, likeButton, likeCounter) {
+export function likeCard(_id, likeButton, likeCounter) {
   return function () {
     const isLiked = likeButton.classList.contains("card__like-button_is-active");
-    const method = isLiked ? "DELETE" : "PUT";
-    const url = `cards/likes/${_id}`;
-    apiRequest({
-      url,
-      method,
-    }).then((data) => {
-      likeButton.classList.toggle("card__like-button_is-active");
-      likes = data.likes;
-      likeCounter.textContent = likes.length;
-    }).catch(catchError);
+    likeCardApi(_id, isLiked)
+      .then((data) => {
+        likeButton.classList.toggle("card__like-button_is-active");
+        likeCounter.textContent = data.likes.length;
+      });
   };
 }
