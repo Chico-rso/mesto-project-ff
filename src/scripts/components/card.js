@@ -1,4 +1,5 @@
-import { apiRequest, catchError } from "../components/api.js";
+import { apiRequest } from "../components/api.js";
+import { catchError } from "../components/utils.js";
 
 export function createCard({link, name, _id, likes, owner}, removeCard, likeCard, openImagePopup, ownerId) {
   const cardTemplate = document.querySelector("#card-template").content;

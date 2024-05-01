@@ -20,7 +20,3 @@ export function apiRequest(apiRequestConfig) {
     body: JSON.stringify(apiRequestConfig.body),
   }).then(handleResponse);
 }
-
-export function catchError(err) {
-  console.log(`Ошибка: ${err}`);
-}

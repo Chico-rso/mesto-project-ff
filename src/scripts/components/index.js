@@ -1,13 +1,14 @@
 import "../../pages/index.css";
 
 import { createCard, removeCard, likeCard } from "./card.js";
-import { openPopup, closePopup } from "./modals.js";
+import { openPopup, closePopup } from "./modal.js";
+import { loadingForm, catchError } from "./utils.js";
 import {
   validationConfig,
   enableValidation,
   clearValidation,
 } from "../components/validation.js";
-import { apiRequest, catchError } from "../components/api.js";
+import { apiRequest } from "../components/api.js";
 
 /**
  * Constant representing the class name for an opened popup.
@@ -104,14 +105,14 @@ function editProfileData() {
     },
   }).then((data) => {
     setUserData(data);
-  });
+  }).catch(catchError);
 }
 
 /**
  * Add new card
  * @param {Object} data - The card data.
  */
-function addNewCard(data, ownerId) {
+function addNewCard(data) {
   apiRequest({
     url: "cards",
     method: "POST",
@@ -121,9 +122,9 @@ function addNewCard(data, ownerId) {
     },
   }).then((data) => {
     cardList.prepend(
-      createCard(data, removeCard, likeCard, openImagePopup, ownerId)
+      createCard(data, removeCard, likeCard, openImagePopup, data.owner._id)
     );
-  });
+  }).catch(catchError);
 }
 
 buttonOpenPopupProfile.addEventListener("click", () => {
@@ -177,35 +178,40 @@ function updatePopupValue() {
   jobInput.value = profileJob.textContent;
 }
 
-function loadingForm(evt, buttonText = "Сохранить") {
-  const button = evt.target.querySelector(".popup__button");
-  button.textContent = buttonText;
-}
-
 /**
  * Handles the form submit event for editing the profile.
  * @param {Event} evt - The form submit event.
  */
-async function handleFormEditProfileSubmit(evt) {
+function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
+
   loadingForm(evt, "Сохранение...");
-  await editProfileData();
+
+  editProfileData();
+
   loadingForm(evt);
+
   closePopup(profileEditPopup, POPUP_IS_OPENED);
 }
 /** Handles the form submit event for adding a new card.
  * @param {Event} evt - The form submit event.
  */
-async function handleFormAddNewCardSubmit(evt) {
+function handleFormAddNewCardSubmit(evt) {
   evt.preventDefault();
+
   loadingForm(evt, "Создание...");
+
   const dataNewCard = {
     name: newCardName.value,
     link: inputNameFormCard.value,
   };
-  await addNewCard(dataNewCard, "661cb6fbb2d4539d21b15277");
+
+  addNewCard(dataNewCard);
+
   formElementAddNewCard.reset();
+
   loadingForm(evt);
+
   closePopup(profileAddPopup, POPUP_IS_OPENED);
 }
 
