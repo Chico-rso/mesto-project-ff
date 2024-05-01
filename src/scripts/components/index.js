@@ -219,19 +219,23 @@ function handleFormAddNewCardSubmit(evt) {
  * Handles the form submit event for changing the avatar.
  * @param {Event} evt - The form submit event.
  */
-async function handleFormChangeAvatarSubmit(evt) {
+function handleFormChangeAvatarSubmit(evt) {
   evt.preventDefault();
+
   loadingForm(evt, "Сохранение...");
-  const data = await apiRequest({
+
+  apiRequest({
     url: "users/me/avatar",
     method: "PATCH",
     body: {
       avatar: avatarUrlInput.value,
     },
+  }).then((data) => {
+    avatarImage.style.backgroundImage = `url(${data.avatar})`;
+  }).finally(() => {
+    loadingForm(evt)
+    closePopup(profileAvatarPopup, POPUP_IS_OPENED);
   });
-  avatarImage.style.backgroundImage = `url(${data.avatar})`;
-  loadingForm(evt);
-  closePopup(profileAvatarPopup, POPUP_IS_OPENED);
 }
 
 formElementAddNewCard.addEventListener("submit", handleFormAddNewCardSubmit);
