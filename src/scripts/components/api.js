@@ -1,5 +1,3 @@
-import { catchError } from "./utils";
-
 const apiConfig = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-12",
   headers: {
