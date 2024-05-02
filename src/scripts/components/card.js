@@ -1,4 +1,5 @@
 import { removeMyCard, likeCardApi } from "../components/api.js";
+import { catchError } from "./utils.js";
 
 export function createCard({link, name, _id, likes, owner}, removeCard, likeCard, openImagePopup, ownerId) {
   const cardTemplate = document.querySelector("#card-template").content;
@@ -40,7 +41,7 @@ export function removeCard(event, _id) {
   removeMyCard(_id)
     .then(() => {
       card.remove();
-    })
+    }).catch(catchError);
 }
 
 export function likeCard(_id, likeButton, likeCounter) {
@@ -50,6 +51,6 @@ export function likeCard(_id, likeButton, likeCounter) {
       .then((data) => {
         likeButton.classList.toggle("card__like-button_is-active");
         likeCounter.textContent = data.likes.length;
-      });
+      }).catch(catchError);
   };
 }

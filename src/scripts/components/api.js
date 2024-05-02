@@ -20,7 +20,6 @@ export const getInitialCards = () => {
     headers: apiConfig.headers,
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const getUserInfo = () => {
@@ -28,7 +27,6 @@ export const getUserInfo = () => {
     headers: apiConfig.headers,
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const editProfile = (name, about) => {
@@ -41,7 +39,6 @@ export const editProfile = (name, about) => {
     }),
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const addCard = (name, link) => {
@@ -54,7 +51,6 @@ export const addCard = (name, link) => {
     }),
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const removeMyCard = (cardId) => {
@@ -63,7 +59,6 @@ export const removeMyCard = (cardId) => {
     headers: apiConfig.headers,
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const likeCardApi = (cardId, isLiked) => {
@@ -72,7 +67,6 @@ export const likeCardApi = (cardId, isLiked) => {
     headers: apiConfig.headers,
   })
   .then(handleResponse)
-  .catch(catchError);
 };
 
 export const updateAvatar = (avatar) => {
@@ -84,5 +78,4 @@ export const updateAvatar = (avatar) => {
     }),
   })
   .then(handleResponse)
-  .catch(catchError);
 };

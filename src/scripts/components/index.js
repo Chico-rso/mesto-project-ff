@@ -2,7 +2,7 @@ import "../../pages/index.css";
 
 import { createCard, removeCard, likeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
-import { loadingForm } from "./utils.js";
+import { loadingForm, catchError } from "./utils.js";
 import {
   validationConfig,
   enableValidation,
@@ -64,6 +64,7 @@ Promise.all([getInitialCards(), getUserInfo()])
     setDataCards(cards, userData._id);
     setUserData(userData);
   })
+  .catch(catchError);
 
 /**
  * Sets the data for the cards.
@@ -76,7 +77,6 @@ function setDataCards(data, ownerId) {
     );
   });
 }
-
 /**
  * Sets the user data.
  * @param {Object} data - The user data.
@@ -87,29 +87,6 @@ function setUserData(data) {
   avatarImage.style.backgroundImage = `url(${data.avatar})`;
 }
 
-/**
- * Edits the profile data.
- */
-function editProfileData() {
-  editProfile(nameInput.value, jobInput.value)
-    .then((data) => {
-      setUserData(data);
-    })
-}
-
-/**
- * Add new card
- * @param {Object} data - The card data.
- */
-function addNewCard(data) {
-  addCard(data.name, data.link)
-    .then((card) => {
-      cardList.prepend(
-        createCard(card, removeCard, likeCard, openImagePopup, card.owner._id)
-      );
-    })
-}
-
 buttonOpenPopupProfile.addEventListener("click", () => {
   openPopup(profileEditPopup, POPUP_IS_OPENED);
   updatePopupValue();
@@ -118,6 +95,7 @@ buttonOpenPopupProfile.addEventListener("click", () => {
 
 buttonOpenPopupAddNewCard.addEventListener("click", () => {
   openPopup(profileAddPopup, POPUP_IS_OPENED);
+  formElementAddNewCard.reset();
   clearValidation(formElementAddNewCard, validationConfig);
 });
 
@@ -170,11 +148,13 @@ function handleFormEditProfileSubmit(evt) {
 
   loadingForm(evt, "Сохранение...");
 
-  editProfileData();
-
-  loadingForm(evt);
-
-  closePopup(profileEditPopup, POPUP_IS_OPENED);
+  editProfile(nameInput.value, jobInput.value)
+    .then((data) => {
+      setUserData(data);
+    })
+    .then(() => closePopup(profileEditPopup, POPUP_IS_OPENED))
+    .catch(catchError)
+    .finally(() => loadingForm(evt));
 }
 /** Handles the form submit event for adding a new card.
  * @param {Event} evt - The form submit event.
@@ -184,18 +164,15 @@ function handleFormAddNewCardSubmit(evt) {
 
   loadingForm(evt, "Создание...");
 
-  const dataNewCard = {
-    name: newCardName.value,
-    link: inputNameFormCard.value,
-  };
-
-  addNewCard(dataNewCard);
-
-  formElementAddNewCard.reset();
-
-  loadingForm(evt);
-
-  closePopup(profileAddPopup, POPUP_IS_OPENED);
+  addCard(newCardName.value, inputNameFormCard.value)
+    .then((card) => {
+      cardList.prepend(
+        createCard(card, removeCard, likeCard, openImagePopup, card.owner._id)
+      );
+    })
+    .then(() => closePopup(profileAddPopup, POPUP_IS_OPENED))
+    .catch(catchError)
+    .finally(() => loadingForm(evt));
 }
 
 /**
@@ -211,10 +188,9 @@ function handleFormChangeAvatarSubmit(evt) {
     .then((data) => {
       avatarImage.style.backgroundImage = `url(${data.avatar})`;
     })
-    .finally(() => {
-      loadingForm(evt);
-      closePopup(profileAvatarPopup, POPUP_IS_OPENED);
-    });
+    .then(() => closePopup(profileAvatarPopup, POPUP_IS_OPENED))
+    .catch(catchError)
+    .finally(() => loadingForm(evt));
 }
 
 formElementAddNewCard.addEventListener("submit", handleFormAddNewCardSubmit);
